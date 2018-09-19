@@ -61,3 +61,4 @@ for i=1:M
 norma_octave(1,i)=norm(g_octave(i,1:3),2); %Norma de cada vector de los valores de octave en cada paso
 endfor
 error_relativo=(error./norma_octave) %Error relativo. Es el mostrado en pantalla 
+Gaston el hacker
