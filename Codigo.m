@@ -64,13 +64,6 @@ endfor
 error_porcentual=(error./norma_octave) %Error porcentual. Es el mostrado en pantalla 
 p=mean(error_porcentual)
 
-%Grafica parabolide hiperbolico y su curva geodesica obtenida a traves de Euler
-%L=[-10:1:10];
-%K=L;
-%[Mx,My]=meshgrid(L,K);
-%Mz=Mx.*My;
-%mesh(Mx,My,Mz)
-%hold
 plot3(u_euler,v_euler,u_euler.*v_euler)
 hold
 plot3(u_octave,v_octave,u_octave.*v_octave)
