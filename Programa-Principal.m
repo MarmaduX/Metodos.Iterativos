@@ -92,86 +92,86 @@ function [u,v]= EulerAtras(a,b,M,y0,tol)
 	Y=zeros(4,M);
 	Y(1:4,1)= y0(1,1:4);
 	for k=1:M-1
-    P=zeros(4,3);
+   		P=zeros(4,3);
 		P(1:4,1)=Y(1:4,k)+h.*(f(Y(1,k),Y(2,k),Y(3,k),Y(4,k))); 
-    P(1:4,2)=Y(1:4,k)+h.*(f(P(1,1),P(2,1),P(3,1),P(4,1)));
-    while(abs(P(1,2)-P(1,1))>=tol)
-      P(1:4,1)=P(1:4,2);
-      P(1:4,3)=Y(1:4,k)+h.*(f(P(1,1),P(2,1),P(3,1),P(4,1)));
-      P(1:4,2)=P(1:4,3);
-    endwhile
-    Y(1:4,k+1)=P(1:4,2);
+		P(1:4,2)=Y(1:4,k)+h.*(f(P(1,1),P(2,1),P(3,1),P(4,1)));
+		while(abs(P(1,2)-P(1,1))>=tol)
+      			P(1:4,1)=P(1:4,2);
+      			P(1:4,3)=Y(1:4,k)+h.*(f(P(1,1),P(2,1),P(3,1),P(4,1)));
+      			P(1:4,2)=P(1:4,3);
+    		endwhile
+    		Y(1:4,k+1)=P(1:4,2);
 	endfor
 	u=Y(1,1:M);
 	v=Y(2,1:M);
 end
 %Implemetnacion de Punto Medio
 function [u,v]= PM(a,b,M,y0)
-  h=(b-a)/M; 
+  	h=(b-a)/M; 
 	Y=zeros(4,M);
 	Y(1:4,1)= y0(1,1:4);
-  Y(1:4,2)= Y(1:4,1)+h.*(f(Y(1,1),Y(2,1),Y(3,1),Y(4,1)));
-  for k=3:M
+  	Y(1:4,2)= Y(1:4,1)+h.*(f(Y(1,1),Y(2,1),Y(3,1),Y(4,1)));
+  	for k=3:M
 		Y(1:4,k)=Y(1:4,k-2)+2*h.*(f(Y(1,k-1),Y(2,k-1),Y(3,k-1),Y(4,k-1)));
 	endfor
-  u=Y(1,1:M);
+  	u=Y(1,1:M);
 	v=Y(2,1:M);
 end 
 %Implementacion de Heun
 function [u,v]= Heun(a,b,M,y0)
-  h=(b-a)/M; 
-  Y=zeros(4,M);
-  P=zeros(4,1);
-  Y(1:4,1)= y0(1,1:4);
-  for k=1:M-1
-    P(1:4,1)=Y(1:4,k)+h.*(f(Y(1,k),Y(2,k),Y(3,k),Y(4,k)));
-	  Y(1:4,k+1)=Y(1:4,k)+(h/2).*(f(Y(1,k),Y(2,k),Y(3,k),Y(4,k))+f(P(1,1),P(2,1),P(3,1),P(4,1)));
-  endfor
-  u=Y(1,1:M);
-  v=Y(2,1:M);
+  	h=(b-a)/M; 
+  	Y=zeros(4,M);
+  	P=zeros(4,1);
+  	Y(1:4,1)= y0(1,1:4);
+  	for k=1:M-1
+  		P(1:4,1)=Y(1:4,k)+h.*(f(Y(1,k),Y(2,k),Y(3,k),Y(4,k)));
+	  	Y(1:4,k+1)=Y(1:4,k)+(h/2).*(f(Y(1,k),Y(2,k),Y(3,k),Y(4,k))+f(P(1,1),P(2,1),P(3,1),P(4,1)));
+  	endfor
+  	u=Y(1,1:M);
+  	v=Y(2,1:M);
 end
 %Implementacion de Trapecio utilizando aproximacion por MIG de punto fijo
 function [u,v]= Trapecio(a,b,M,y0,tol)
-  tol=0.001;
+  	tol=0.001;
 	h=(b-a)/M; 
 	Y=zeros(4,M);
 	Y(1:4,1)= y0(1,1:4);
 	for k=1:M-1
-    P=zeros(4,3);
+    		P=zeros(4,3);
 		P(1:4,1)=Y(1:4,k)+h.*(f(Y(1,k),Y(2,k),Y(3,k),Y(4,k))); 
-    P(1:4,2)=(h/2).*f(P(1,1),P(2,1),P(3,1),P(4,1))+(Y(1:4,k)+(h/2).*(f(Y(1,k),Y(2,k),Y(3,k),Y(4,k)))); %El ultimo termino esta "fijo"
-    while(abs(P(1,2)-P(1,1))>=tol)
-      P(1:4,1)=P(1:4,2);
-      P(1:4,3)=(h/2).*f(P(1,1),P(2,1),P(3,1),P(4,1))+(Y(1:4,k)+(h/2).*(f(Y(1,k),Y(2,k),Y(3,k),Y(4,k)))); %El ultimo termino esta "fijo"
-      P(1:4,2)=P(1:4,3);
-    endwhile
-    Y(1:4,k+1)=P(1:4,2);
+    		P(1:4,2)=(h/2).*f(P(1,1),P(2,1),P(3,1),P(4,1))+(Y(1:4,k)+(h/2).*(f(Y(1,k),Y(2,k),Y(3,k),Y(4,k)))); %El ultimo termino esta "fijo"
+    		while(abs(P(1,2)-P(1,1))>=tol)
+      			P(1:4,1)=P(1:4,2);
+      			P(1:4,3)=(h/2).*f(P(1,1),P(2,1),P(3,1),P(4,1))+(Y(1:4,k)+(h/2).*(f(Y(1,k),Y(2,k),Y(3,k),Y(4,k)))); %El ultimo termino esta "fijo"
+      			P(1:4,2)=P(1:4,3);
+    		endwhile
+    		Y(1:4,k+1)=P(1:4,2);
 	endfor
 	u=Y(1,1:M);
 	v=Y(2,1:M);
 end
 %Implementacion de Runge Kutta de cuarto orden
 function [u,v]= RK4(a,b,M,y0)
-  h=(b-a)/M; 
-  Y=zeros(4,M);
-  F1=zeros(4,1);
-  F2=zeros(4,1);
-  F3=zeros(4,1);
-  F4=zeros(4,1);
-  Y(1:4,1)= y0(1,1:4);
-  for k=1:M-1
-    F1(1:4,1)=f(Y(1,k),Y(2,k),Y(3,k),Y(4,k));
-    F2(1:4,1)=f(Y(1,k)+(h*0.5)*F1(1,1),Y(2,k)+(h*0.5)*F1(2,1),Y(3,k)+(h*0.5)*F1(3,1),Y(4,k)+(h*0.5)*F1(4,1));
-    F3(1:4,1)=f(Y(1,k)+(h*0.5)*F2(1,1),Y(2,k)+(h*0.5)*F2(2,1),Y(3,k)+(h*0.5)*F2(3,1),Y(4,k)+(h*0.5)*F2(4,1));
-    F4(1:4,1)=f(Y(1,k)+h*F3(1,1),Y(2,k)+h*F3(2,1),Y(3,k)+h*F3(3,1),Y(4,k)+h*F3(4,1));
-	  Y(1:4,k+1)=Y(1:4,k)+(h/6).*(F1(1:4,1)+2.*(F2(1:4,1)+F3(1:4,1))+F4(1:4,1));
-  endfor
-  u=Y(1,1:M);
-  v=Y(2,1:M);
+  	h=(b-a)/M; 
+  	Y=zeros(4,M);
+  	F1=zeros(4,1);
+  	F2=zeros(4,1);
+  	F3=zeros(4,1);
+  	F4=zeros(4,1);
+  	Y(1:4,1)= y0(1,1:4);
+  	for k=1:M-1
+    		F1(1:4,1)=f(Y(1,k),Y(2,k),Y(3,k),Y(4,k));
+    		F2(1:4,1)=f(Y(1,k)+(h*0.5)*F1(1,1),Y(2,k)+(h*0.5)*F1(2,1),Y(3,k)+(h*0.5)*F1(3,1),Y(4,k)+(h*0.5)*F1(4,1));
+    		F3(1:4,1)=f(Y(1,k)+(h*0.5)*F2(1,1),Y(2,k)+(h*0.5)*F2(2,1),Y(3,k)+(h*0.5)*F2(3,1),Y(4,k)+(h*0.5)*F2(4,1));
+    		F4(1:4,1)=f(Y(1,k)+h*F3(1,1),Y(2,k)+h*F3(2,1),Y(3,k)+h*F3(3,1),Y(4,k)+h*F3(4,1));
+	  	Y(1:4,k+1)=Y(1:4,k)+(h/6).*(F1(1:4,1)+2.*(F2(1:4,1)+F3(1:4,1))+F4(1:4,1));
+  	endfor
+  	u=Y(1,1:M);
+  	v=Y(2,1:M);
 end 
 %Definicion de la funcion f(t,y(t))
 function Z = f(w,x,y,z)
-  Z=zeros(4,1);
+  	Z=zeros(4,1);
 	Z(1,1)=y;
 	Z(2,1)=z;
 	Z(3,1)=(-2*x*y*z)/(w^2+x^2+1);
